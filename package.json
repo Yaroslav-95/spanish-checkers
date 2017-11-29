@@ -1,0 +1,16 @@
+{
+  "name": "checkers",
+  "version": "0.5.3",
+  "description": "Spanish Checkers",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yaroslav de la Peña Smirnov",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}

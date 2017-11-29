@@ -1,0 +1,122 @@
+@font-face {
+  font-family: "shashki";
+  src:url("/static/fonts/shashki.eot");
+  src:url("/static/fonts/shashki.eot?#iefix") format("embedded-opentype"),
+    url("/static/fonts/shashki.woff") format("woff"),
+    url("/static/fonts/shashki.ttf") format("truetype"),
+    url("/static/fonts/shashki.svg#shashki") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+.navbar, .nav-container{
+    border-radius: 0 !important;
+}
+
+.btn{
+  margin-top: 10px;
+}
+
+.alert .btn, .panel-heading .btn{
+  margin: 0;
+}
+
+.panel-heading{
+  font-weight: 700;
+}
+
+.player-name.active{
+  font-weight: 700;
+  color: rgb(0, 158, 0);
+}
+
+#board{
+  table-layout: fixed;
+  width: 416px;
+  height: 416px;
+  margin: 0 auto;
+  border: 3px solid #000;
+  background:#FFECCA;
+}
+
+#board .square{
+  width: 52px !important;
+  height: 52px !important;
+  font-size: 42px;
+  line-height: 45px;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+#b1, #d1, #f1, #h1, #a2, #c2, #e2, #g2, #b3, #d3, #f3, #h3, #a4, #c4, #e4, #g4,
+#b5, #d5, #f5, #h5, #a6, #c6, #e6, #g6, #b7, #d7, #f7, #h7, #a8, #c8, #e8, #g8 {
+  background:#FFECCA;
+}
+
+#a1, #c1, #e1, #g1, #b2, #d2, #f2, #h2, #a3, #c3, #e3, #g3, #b4, #d4, #f4, #h4,
+#a5, #c5, #e5, #g5, #b6, #d6, #f6, #h6, #a7, #c7, #e7, #g7, #b8, #d8, #f8, #h8 {
+  background:#684B33;
+}
+
+.piece:before{
+    font-family: "shashki" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    font-size: 42px;
+    line-height: 45px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+.piece.white{
+  color: #992E2E;
+}
+
+.piece.black{
+  color: #000;
+}
+
+.white.pawn:before {
+  content: "\63";
+}
+
+.white.dame:before {
+  content: "\64";
+}
+
+.black.pawn:before {
+  content: "\63";
+}
+
+.black.dame:before {
+  content: "\64";
+}
+
+@keyframes move-anim{
+  0% {background-color: #FFECCA;}
+  50% {background-color: #adffad;}
+  100% {background-color: #FFECCA;}
+}
+
+.square.selected{
+  background-color: #adffad !important;
+}
+
+.square.move{
+  animation-name: move-anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.square.last-move{
+  box-sizing: border-box;
+  border: 3px solid #00cc00;
+}
