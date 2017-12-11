@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 var playerName = "";
 var opponentName = "";
 var playerColor = "white";
+var opponentColor = "black";
 var isTurn = false;
 var ongoingGame = false;
 var defaultSquareIDs  = [
@@ -38,11 +39,13 @@ function initBoard(player){
     if (player == 1){ 
         squareIDs = defaultSquareIDs;
         playerColor = "white";
+        opponentColor = "black";
         upperPieces = "piece black pawn";
         lowerPieces = "piece white pawn";
     }
     else {
         playerColor = "black";
+        opponentColor = "white";
         squareIDs = [];
         for (i = defaultSquareIDs.length - 1; i >= 0; i--){
             squareIDs.push(defaultSquareIDs[i]);
@@ -75,12 +78,28 @@ function initBoard(player){
     ongoingGame = true;
 }
 
-function getMoves(event){
-    if (!isTurn){ return; }
-    var piece = event.target;
+function checkBoardForMoves(pieceColor){
+    for(var i = 0; i < squareIDs.length; i++){
+        var id = "#"+squareIDs[i];
+        console.log(id);
+        if($(id).hasClass(pieceColor)){
+            if(getMoves(id)){
+                $(".square").removeClass("selected move");
+                $(".square").removeClass("selected kill");
+                return true;
+            }
+        }
+    }
+    console.log("there are no move for "+pieceColor+" player");
+    $(".square").removeClass("selected move");
+    $(".square").removeClass("selected kill");
+    return false;
+}
+
+function getMoves(piece){
     $(".square").removeClass("selected kill");
     $(".square").removeClass("move");
-    $(event.target).addClass("selected");
+    $(piece).addClass("selected");
     var pieceColor = "white";
     var pieceType = "pawn";
     if ($(piece).hasClass("black")){ pieceColor = "black"; }
@@ -88,6 +107,7 @@ function getMoves(event){
     var pieceID = $(piece).attr("id");
     var pX = pieceID.charCodeAt(0)-96;
     var pY = parseInt(pieceID.charAt(1));
+    var canMove = false;
     if(pieceType == "dame"){
         var opponent = "black";
         if ($(piece).hasClass("black")){ opponent = "white"; }
@@ -100,6 +120,7 @@ function getMoves(event){
             if(!$(moveRID).hasClass("piece")){
                 $(moveRID).addClass("move");
                 mRX++;
+                canMove = true;
             }
             else{
                 if(mY<8 && mRX<8 && $(moveRID).hasClass(opponent)){
@@ -110,6 +131,7 @@ function getMoves(event){
                     if(!$(moveRID).hasClass("piece")  && mRX < 9){
                         $(moveRID).addClass("move kill");
                         $(moveRID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mRX, nmY);
                     }
                 }
@@ -121,6 +143,7 @@ function getMoves(event){
             if(!$(moveLID).hasClass("piece")  && mLX > 0){
                 $(moveLID).addClass("move");
                 mLX--;
+                canMove = true;
             }
             else{
                 if(mY<8 && mLX>1 && $(moveLID).hasClass(opponent)){
@@ -131,6 +154,7 @@ function getMoves(event){
                     if(!$(moveLID).hasClass("piece")){
                         $(moveLID).addClass("move kill");
                         $(moveLID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mLX, nmY);
                     }
                 }
@@ -148,6 +172,7 @@ function getMoves(event){
             if(!$(moveRID).hasClass("piece")){
                 $(moveRID).addClass("move");
                 mRX++;
+                canMove = true;
             }
             else{
                 if(mY>1 && mRX<8 && $(moveRID).hasClass(opponent)){
@@ -158,6 +183,7 @@ function getMoves(event){
                     if(!$(moveRID).hasClass("piece")){
                         $(moveRID).addClass("move kill");
                         $(moveRID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mRX, nmY);
                     }
                 }
@@ -169,6 +195,7 @@ function getMoves(event){
             if(!$(moveLID).hasClass("piece")){
                 $(moveLID).addClass("move");
                 mLX--;
+                canMove = true;
             }
             else{
                 if(mY>1 && mLX>1 && $(moveLID).hasClass(opponent)){
@@ -179,6 +206,7 @@ function getMoves(event){
                     if(!$(moveLID).hasClass("piece")){
                         $(moveLID).addClass("move kill");
                         $(moveLID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mLX, nmY);
                     }
                 }
@@ -196,6 +224,7 @@ function getMoves(event){
                 var moveID = "#"+String.fromCharCode(mX+96)+mY;
                 if(!$(moveID).hasClass("piece")){
                     $(moveID).addClass("move");
+                    canMove = true;
                 }
                 else if(pX < 7 && pY < 7 && $(moveID).hasClass("black")){
                     var victimID = moveID;
@@ -205,6 +234,7 @@ function getMoves(event){
                     if(!$(moveID).hasClass("piece")){
                         $(moveID).addClass("move kill");
                         $(moveID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mX, mY);
                     }
                 }
@@ -215,6 +245,7 @@ function getMoves(event){
                 var moveID = "#"+String.fromCharCode(mX+96)+mY;
                 if(!$(moveID).hasClass("piece")){
                     $(moveID).addClass("move");
+                    canMove = true;
                 }
                 else if(pX > 2 && pY < 7 && $(moveID).hasClass("black")){
                     var victimID = moveID;
@@ -224,6 +255,7 @@ function getMoves(event){
                     if(!$(moveID).hasClass("piece")){
                         $(moveID).addClass("move kill");
                         $(moveID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mX, mY);
                     }
                 }
@@ -238,6 +270,7 @@ function getMoves(event){
                 var moveID = "#"+String.fromCharCode(mX+96)+mY;
                 if(!$(moveID).hasClass("piece")){
                     $(moveID).addClass("move");
+                    canMove = true;
                 }
                 else if(pX < 7 && pY > 2 && $(moveID).hasClass("white")){
                     var victimID = moveID;
@@ -247,6 +280,7 @@ function getMoves(event){
                     if(!$(moveID).hasClass("piece")){
                         $(moveID).addClass("move kill");
                         $(moveID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mX, mY);
                     }
                 }
@@ -257,6 +291,7 @@ function getMoves(event){
                 var moveID = "#"+String.fromCharCode(mX+96)+mY;
                 if(!$(moveID).hasClass("piece")){
                     $(moveID).addClass("move");
+                    canMove = true;
                 }
                 else if(pX > 2 && pY > 2 && $(moveID).hasClass("white")){
                     var victimID = moveID;
@@ -266,12 +301,14 @@ function getMoves(event){
                     if(!$(moveID).hasClass("piece")){
                         $(moveID).addClass("move kill");
                         $(moveID).attr("victim", victimID);
+                        canMove = true;
                         findMoreMoves(pieceColor, pieceType, victimID, mX, mY);
                     }
                 }
             }
         }
     }
+    return canMove;
 }
 
 function findMoreMoves(pieceColor, pieceType, victimIDs, pX, pY){
@@ -358,9 +395,8 @@ function findMoreMoves(pieceColor, pieceType, victimIDs, pX, pY){
     }
 }
 
-function movePiece(event){
+function movePiece(mSquare){
     if (!isTurn){ return; }
-    var mSquare = event.target;
     var pieceColor = "white";
     var pieceType = "pawn";
     if($(".selected").first().hasClass("black")){ pieceColor = "black"; }
@@ -392,13 +428,13 @@ function movePiece(event){
 
 $(document).on("click", ".square.piece", function(event){
     if(isTurn && $(event.target).hasClass(playerColor)){
-        getMoves(event);
+        getMoves(event.target);
     }
 });
 
 $(document).on("click", ".square.move", function(event){
     if(isTurn){
-        movePiece(event);
+        movePiece(event.target);
     }
 });
 
@@ -439,11 +475,11 @@ function initializeEvents(){
         socket = null;
     });
     socket.on("game started", function(gameID){
-        $("#start-container").html("<div class='panel panel-default'><div class='panel-heading'>Game ID: "+gameID.toString()+" <a id='btn-truce' class='btn btn-default' style='display:none'>Request tie</a></div></div><div id='message-box'></div><hr><div class='text-center'><h4 id='opponent-name' class='player-name'>Waiting for player...</h4><div id='board-container'></div><h4 id='local-name' class='player-name'>"+playerName+"</h4></div>");
+        $("#start-container").html("<div class='panel panel-default'><div class='panel-heading'>Game ID: "+gameID.toString()+" <a id='btn-truce' class='btn btn-default' style='display:none'>Offer a draw</a></div></div><div id='message-box'></div><hr><div class='text-center'><h4 id='opponent-name' class='player-name'>Waiting for player...</h4><div id='board-container'></div><h4 id='local-name' class='player-name'>"+playerName+"</h4></div>");
         initBoard(1);
     });
     socket.on("game joined", function(gameID, opponent){
-        $("#start-container").html("<div class='panel panel-default'><div class='panel-heading'>Game ID: "+gameID.toString()+" <a id='btn-truce' class='btn btn-default'>Request tie</a></div></div><div id='message-box'></div><hr><div class='text-center'><h4 id='opponent-name' class='player-name active'>"+opponent+"</h4><div id='board-container'></div><h4 id='local-name' class='player-name'>"+playerName+"</h4></div>");
+        $("#start-container").html("<div class='panel panel-default'><div class='panel-heading'>Game ID: "+gameID.toString()+" <a id='btn-truce' class='btn btn-default'>Offer a draw</a></div></div><div id='message-box'></div><hr><div class='text-center'><h4 id='opponent-name' class='player-name active'>"+opponent+"</h4><div id='board-container'></div><h4 id='local-name' class='player-name'>"+playerName+"</h4></div>");
         initBoard(2);
         opponentName = opponent;
         $("#btn-truce").css("display", "inline-block");
@@ -459,11 +495,21 @@ function initializeEvents(){
         isTurn = true;
         $("#local-name").addClass("active");
         $("#opponent-name").removeClass("active");
+        if(!checkBoardForMoves(playerColor)){
+            $("#message-box").html("<div class='alert alert-danger'>You ran out of moves, you lose. Victory goes to "+opponentName+". Better luck next time! <a class='btn btn-danger btn-sm' href='/'>New game</a>");
+            ongoingGame = false;
+            isTurn = false;
+        }
     });
     socket.on("turn end", function(){
         isTurn = false;
         $("#local-name").removeClass("active");
         $("#opponent-name").addClass("active");
+        if(!checkBoardForMoves(opponentColor)){
+            $("#message-box").html("<div class='alert alert-success'>"+opponentName+" has run out of moves. You've won! <a class='btn btn-success btn-sm' href='/'>New game</a>");
+            ongoingGame = false;
+            isTurn = false;
+        }
     });
     socket.on("move piece", function(origin, target){
         var pieceColor = "black";
@@ -480,10 +526,10 @@ function initializeEvents(){
         $("#"+pieceRemoved).removeClass("piece white black pawn dame");
     });
     socket.on("truce requested", function(){
-        $("#message-box").html("<div class='alert alert-info'>"+opponentName+" wants to declare the game a tie. Do you accept their offer? <a id='btn-truce-accept' class='btn btn-info btn-sm'>Accept</a> <a id='btn-truce-decline' class='btn btn-info btn-sm'>Decline</a></div>");
+        $("#message-box").html("<div class='alert alert-info'>"+opponentName+" wants to declare the game a draw. Do you accept their offer? <a id='btn-truce-accept' class='btn btn-info btn-sm'>Accept</a> <a id='btn-truce-decline' class='btn btn-info btn-sm'>Decline</a></div>");
     });
     socket.on("truce accepted", function(){
-        $("#message-box").html("<div class='alert alert-info'>"+opponentName+" has accepted your truce offer. The game is a tie. <a class='btn btn-info btn-sm' href='/'>New game</a>");
+        $("#message-box").html("<div class='alert alert-info'>"+opponentName+" has accepted your draw offer. The game is a draw. <a class='btn btn-info btn-sm' href='/'>New game</a>");
         ongoingGame = false;
         isTurn = false;
     });

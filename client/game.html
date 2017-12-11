@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/styleBoard.css">
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/board.js"></script>
+        <title>Spanish Checkers by Yaroslav de la Peña Smirnov</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container nav-container">
+                <div class="navbar-header">
+                    <p class="navbar-brand">Spanish Checkers</p>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <h2>Game board client side code test</h2>
+            <btn class="btn btn-primary" onclick="initBoard(1);">Initialize as P1</btn>
+            <btn class="btn btn-primary" onclick="initBoard(2);">Initialize as P2</btn>
+        </div>
+        <div id="board-container" class="container">
+        </div>
+    </body>
+</html>
