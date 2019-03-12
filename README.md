@@ -2,7 +2,7 @@
 
 This is a project of an online game of the spanish variant of checkers or draughts. I've made this project as part of a university project as a proof of concept for me to learn NodeJS and Socket.io. It uses the following NodeJS libraries: Socket.io, Express, Body-parser.
 
-It is by no means the best implementation of checkers, and it may lack some features, but it pretty much playable and the only thing that is required to play it is a relatively modern web browser with Html5 and javascript support, and of course, a friend to play with.
+An old not-ideal, yet fun to play little side-project/university assignment. It is lacking some features, and may contain unexpected features (ie bugs). Most probably will never fix any of that.
 
 The game can be played online at [checkers.yaroslavps.com](http://checkers.yaroslavps.com).
 
